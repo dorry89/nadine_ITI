@@ -4,6 +4,7 @@
  *  Created on: Mar 9, 2016
  *      Author: m.mamdooh
  */
+#include "type.h"
 #include "DIO-interface.h"
 #include "CLCD_config.h"
 #include "DELAY.h"
@@ -89,31 +90,3 @@ while(*Copy_u8Data)
 	}
 	return 0 ;
 }
-extern u8 CLCD_u8ReadBF(u8 *Copy_u8BF)
-{
-	DIO_u8WritePinVal(CLC_u8RS, DIO_u8LOW);
-	DIO_u8WritePinVal(CLC_u8RW, DIO_u8HIGH);
-	//DIO_u8WritePinVal(CLC_u8EN, DIO_u8HIGH);
-	DIO_u8WritePinDir(CLC_u8D7,DIO_u8LOW);
-	DIO_u8ReadPinVal(CLC_u8D7,Copy_u8BF);
-	DELAY(1);
-	//DIO_u8WritePinVal(CLC_u8EN, DIO_u8LOW);
-	DIO_u8WritePinDir(CLC_u8D7,DIO_u8HIGH);
-
-	return 0 ;
-}
-
-extern u8 CLCD_u8WriteOnCGRam(u8 *Copy_u8Ptrn,u8 Copy_location)
-{
-	u8 local_loopcount ;
-	CLCD_u8WriteComand((0x40+Copy_location*8));
-	for(local_loopcount=0 ; local_loopcount<8;local_loopcount++)
-	{
-		CLCD_u8WriteDataChar(Copy_u8Ptrn[local_loopcount]);
-	}
-
-
-	return CHKerr[Copy_location<8]  ;
-}
-
-

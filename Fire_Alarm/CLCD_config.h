@@ -12,14 +12,14 @@
 ///////////////MACROS///////////////////////
 ///////////////////////////////////////////
 
-#define CLC_u8D0 	DIO_u8PIN8
-#define CLC_u8D1 	DIO_u8PIN9
-#define CLC_u8D2 	DIO_u8PIN10
-#define CLC_u8D3 	DIO_u8PIN11
-#define CLC_u8D4 	DIO_u8PIN12
-#define CLC_u8D5 	DIO_u8PIN13
-#define CLC_u8D6 	DIO_u8PIN14
-#define CLC_u8D7 	DIO_u8PIN15
+#define CLC_u8D0 	DIO_u8PIN15
+#define CLC_u8D1 	DIO_u8PIN8
+#define CLC_u8D2 	DIO_u8PIN9
+#define CLC_u8D3 	DIO_u8PIN10
+#define CLC_u8D4 	DIO_u8PIN11
+#define CLC_u8D5 	DIO_u8PIN12
+#define CLC_u8D6 	DIO_u8PIN13
+#define CLC_u8D7 	DIO_u8PIN14
 
 #define CLC_u8RS 	DIO_u8PIN16
 #define CLC_u8RW 	DIO_u8PIN17

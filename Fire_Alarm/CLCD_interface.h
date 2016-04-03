@@ -44,9 +44,6 @@
 ///////////////////////////////////////////
 extern u8 CLCD_u8WriteComand(u8 Copy_u8command) ;
 extern u8 CLCD_u8WriteDataStr(u8 *Copy_u8Data) ;
-extern u8 CLCD_u8WriteDataChar(u8 Copy_u8command) ;
 void CLC_voidInit(void);
-extern u8 CLCD_u8ReadBF(u8 *Copy_u8BF);
-extern u8 CLCD_u8WriteOnCGRam(u8 *Copy_u8Ptrn,u8 Copy_location);
 
 #endif /* CLCD_INTERFACE_H_ */

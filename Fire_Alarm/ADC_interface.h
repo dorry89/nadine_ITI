@@ -61,8 +61,6 @@
 ///////////////////// API's ////////////////////////////////
 ////////////////////////////////////////////////////////////
 extern u8 ADC_u8ReadCh_SSht(u8 Copy_ChIdx , u16 * Copy_PtrToVal);
-extern u8 ADC_u8ReadCh_MSht(u8 Copy_ChIdx , u16 * Copy_PtrToVal);
-extern u8 ADC_u8ReadGp( u8 * Copy_IdxArr, u16 * Copy_PtrToVal);
 extern void ADC_voidInit(void);
 extern void ADC_voidEnable(void);
 extern void ADC_voidDisable(void);

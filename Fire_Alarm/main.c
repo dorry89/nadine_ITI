@@ -12,19 +12,19 @@
 #include "TSEN_interface.h"
 #include "App_config.h"
 
-u16 AdcRead ,OldAdcRead ;
+u16 AdcRead=0 ,OldAdcRead=1 ;
 u8  AdcStr[2],CountStr[2];
-u8	THR_COUNT, Old_THR_COUNT , THR_FLAG=0;
+u8	THR_COUNT=0, Old_THR_COUNT=1 , THR_FLAG=0;
 
 void Write_LCD(void) ;
 
 void main (void)
 {
 
-   AdcRead=0 ;
-   OldAdcRead=1 ;
-   THR_COUNT= 0 ;
-   Old_THR_COUNT= 1 ;
+//   AdcRead=0 ;
+//   OldAdcRead=1 ;
+//   THR_COUNT= 0 ;
+//   Old_THR_COUNT= 1 ;
 
 
 	DIO_voidInit();
@@ -38,14 +38,15 @@ while(1)
 
 	    if( AdcRead > (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE) && THR_FLAG==0  )
 	    {
-	    	BUZ_voidBuzOn();
+	    	//BUZ_voidBuzOn();
 	    	THR_COUNT++;
-	    	THR_FLAG=1 ;
+	    	THR_FLAG++ ;
 
 	    	if(THR_COUNT>100)
 	    		THR_COUNT=0 ;
 	    }
-	    else if( AdcRead < (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)  )
+
+	   else if( AdcRead < (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)  && THR_FLAG==1  )
 	    {
 	    	BUZ_voidBuzOff();
 	    	THR_FLAG=0;
@@ -53,16 +54,19 @@ while(1)
 
 
 
-	    if(THR_COUNT != Old_THR_COUNT || AdcRead != OldAdcRead)
+	    if(THR_COUNT != Old_THR_COUNT || abs(AdcRead - OldAdcRead) <4)
 	    {
+
 	    	 Write_LCD();
+	    	 OldAdcRead = AdcRead ;
+	    	 Old_THR_COUNT=THR_COUNT ;
 	    }
 	}
 }
 
 void Write_LCD(void)
 {
-	//CLCD_u8WriteComand( CLC_u8CLRDISP);
+
 	CLCD_u8WriteComand(CLC_u8STL);
 
 	if(AdcRead<10)
@@ -77,7 +81,7 @@ void Write_LCD(void)
 	{
 		itoa(AdcRead,AdcStr,10) ;
 		CLCD_u8WriteDataStr("TEMP: ");
-		    CLCD_u8WriteDataStr(AdcStr) ;
+		CLCD_u8WriteDataStr(AdcStr) ;
 	}
 
 
@@ -87,19 +91,4 @@ void Write_LCD(void)
 	CLCD_u8WriteDataStr("COUNT: ");
 	CLCD_u8WriteDataStr(CountStr);
 
-
-	OldAdcRead = AdcRead ;
-	Old_THR_COUNT=THR_COUNT ;
 }
-//if(local_u8AdcRead<10)
-//{
-//	itoa(local_u8AdcRead,local_u8AdcStr,10) ;
-//	CLCD_u8WriteDataStr("0");
-//    CLCD_u8WriteDataStr(local_u8AdcStr) ;
-//
-//}
-//else
-//{
-//	itoa(local_u8AdcRead,local_u8AdcStr,10) ;
-//	    CLCD_u8WriteDataStr(local_u8AdcStr) ;
-//}

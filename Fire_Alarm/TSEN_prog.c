@@ -34,7 +34,7 @@ u8 TSEN_u8ReadTSensr(u8 Copy_SenIdx , u16 *Copy_PtrToVal)
 {
 	u16 Local_u8AdcVal ;
 	ADC_u8ReadCh_SSht(TSEN_u8SNSORS[Copy_SenIdx ],&Local_u8AdcVal);
-	Local_u8AdcVal/=4 ;
+	Local_u8AdcVal/=2 ;
 	*Copy_PtrToVal=Local_u8AdcVal;
 
 	return CHCKERR[Copy_SenIdx>8];
