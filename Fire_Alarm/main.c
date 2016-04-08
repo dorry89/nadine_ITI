@@ -11,55 +11,60 @@
 #include "BUZ_interface.h"
 #include "TSEN_interface.h"
 #include "App_config.h"
-
+#include "TIM0_interface.h"
 u16 AdcRead=0 ,OldAdcRead=1 ;
 u8  AdcStr[2],CountStr[2];
 u8	THR_COUNT=0, Old_THR_COUNT=1 , THR_FLAG=0;
-
+u8  ADC= 1 ;
 void Write_LCD(void) ;
 
 void main (void)
 {
 
 //   AdcRead=0 ;
-//   OldAdcRead=1 ;
+  OldAdcRead=1 ;
 //   THR_COUNT= 0 ;
-//   Old_THR_COUNT= 1 ;
 
+u32 TimeRead=0;
 
 	DIO_voidInit();
 	ADC_voidInit();
+	TIM0_voidInit();
 	CLC_voidInit();
 	ADC_voidEnable();
+	CLCD_u8WriteComand(CLC_u8CLRDISP);
 while(1)
 	{
 
 		TSEN_u8ReadTSensr(0,&AdcRead);
 
+
 	    if( AdcRead > (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE) && THR_FLAG==0  )
 	    {
 	    	//BUZ_voidBuzOn();
 	    	THR_COUNT++;
-	    	THR_FLAG++ ;
+	    	THR_FLAG=1 ;
 
 	    	if(THR_COUNT>100)
 	    		THR_COUNT=0 ;
 	    }
 
-	   else if( AdcRead < (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)  && THR_FLAG==1  )
+	   else if( AdcRead < ((TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)-2)  )
 	    {
 	    	BUZ_voidBuzOff();
-	    	THR_FLAG=0;
+	    	THR_FLAG=0 ;
+
 	    }
 
+	    if(OldAdcRead-AdcRead>2)
+	    	ADC= AdcRead ;
 
-
-	    if(THR_COUNT != Old_THR_COUNT || abs(AdcRead - OldAdcRead) <4)
+	    TimeRead=TIM0_u8ReadOF();
+	    if(TimeRead>1000 )
 	    {
-
 	    	 Write_LCD();
-	    	 OldAdcRead = AdcRead ;
-	    	 Old_THR_COUNT=THR_COUNT ;
+	    	 OldAdcRead=AdcRead;
+	    	TIM0_voiResetTimer();
 	    }
 	}
 }
@@ -71,7 +76,7 @@ void Write_LCD(void)
 
 	if(AdcRead<10)
 	{
-		itoa(AdcRead,AdcStr,10) ;
+		itoa(ADC,AdcStr,10) ;
 		CLCD_u8WriteDataStr("TEMP: ");
 		CLCD_u8WriteDataStr("0");
 	    CLCD_u8WriteDataStr(AdcStr) ;
@@ -79,7 +84,7 @@ void Write_LCD(void)
 	}
 	else
 	{
-		itoa(AdcRead,AdcStr,10) ;
+		itoa(ADC,AdcStr,10) ;
 		CLCD_u8WriteDataStr("TEMP: ");
 		CLCD_u8WriteDataStr(AdcStr) ;
 	}
