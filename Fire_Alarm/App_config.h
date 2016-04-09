@@ -10,7 +10,7 @@
 
 //temperature sensor threshold
 //range : 0 to 100
-#define TSEN_u8THRSHOLD   30
+#define TSEN_u8THRSHOLD   34
 
 //temperature sensor tolerance
 //range : 0 to 100

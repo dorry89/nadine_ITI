@@ -37,11 +37,11 @@ while(1)
 	{
 
 		TSEN_u8ReadTSensr(0,&AdcRead);
-
+		TimeRead=TIM0_u8ReadOF();
 
 	    if( AdcRead > (TSEN_u8THRSHOLD - TSEN_u8TOLERANCE) && THR_FLAG==0  )
 	    {
-	    	//BUZ_voidBuzOn();
+
 	    	THR_COUNT++;
 	    	THR_FLAG=1 ;
 
@@ -49,7 +49,7 @@ while(1)
 	    		THR_COUNT=0 ;
 	    }
 
-	   else if( AdcRead < ((TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)-2)  )
+	   else if( AdcRead < ((TSEN_u8THRSHOLD - TSEN_u8TOLERANCE)-4)  )
 	    {
 	    	BUZ_voidBuzOff();
 	    	THR_FLAG=0 ;
@@ -59,7 +59,11 @@ while(1)
 	    if(OldAdcRead-AdcRead>2)
 	    	ADC= AdcRead ;
 
-	    TimeRead=TIM0_u8ReadOF();
+	    if(THR_FLAG==1)
+	    {
+	    	BUZ_voidBuzOn();
+	    }
+
 	    if(TimeRead>1000 )
 	    {
 	    	 Write_LCD();
